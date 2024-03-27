@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout/Layout";
-import axios from "axios";
+import Axios from "axios";
 import toast from "react-hot-toast";
 
 const Register = () => {
@@ -14,19 +14,21 @@ const Register = () => {
     address: "",
   };
 
-  const [user, setUser] = useState(newUser);
-
+  const [addUser, setaddUser] = useState(newUser);
+  const ServerAPI = "http://localhost:8080/api/v1/auth";
   async function HandleClick(e) {
     e.preventDefault();
-    console.log("Clicked");
     try {
-      if (user.password !== user.password0) {
+      if (addUser.password !== addUser.password0) {
         toast.error("Password Doesn't Match");
         return;
       }
-      const res = await axios.post(`/register`, {
-        user,
+      const res = await Axios.post(`${ServerAPI}/register`, {
+        addUser,
       });
+      if (res.data.success) {
+        toast.success("Registered Sucessfully");
+      }
     } catch (error) {
       toast.error("Something went Wrong");
     }
@@ -47,76 +49,88 @@ const Register = () => {
             <div className="d-flex justify-content-center">
               <input
                 type="text"
-                value={user.fName}
+                value={addUser.fName}
                 placeholder="First Name"
                 id="fName"
                 className="col-md-5"
                 required
-                onChange={(e) => setUser({ ...user, fName: e.target.value })}
+                onChange={(e) =>
+                  setaddUser({ ...addUser, fName: e.target.value })
+                }
               />
               <input
                 type="text"
-                value={user.lName}
+                value={addUser.lName}
                 placeholder="Last Name"
                 id="lName"
                 className="col-md-5 ml-custom"
                 required
-                onChange={(e) => setUser({ ...user, lName: e.target.value })}
+                onChange={(e) =>
+                  setaddUser({ ...addUser, lName: e.target.value })
+                }
               />
             </div>
 
             <input
               type="email"
-              value={user.email}
+              value={addUser.email}
               placeholder="Email Address"
               id="email"
               className="col-md-11"
               style={{ marginLeft: "3vh" }}
               required
-              onChange={(e) => setUser({ ...user, email: e.target.value })}
+              onChange={(e) =>
+                setaddUser({ ...addUser, email: e.target.value })
+              }
             />
 
             <input
               type="number"
-              value={user.phone}
+              value={addUser.phone}
               placeholder="Phone Number"
               id="phone"
               className="col-md-11"
               style={{ marginLeft: "3vh" }}
               required
-              onChange={(e) => setUser({ ...user, phone: e.target.value })}
+              onChange={(e) =>
+                setaddUser({ ...addUser, phone: e.target.value })
+              }
             />
             <div className="d-flex justify-content-center">
               <input
                 type="password"
-                value={user.password}
+                value={addUser.password}
                 placeholder="Enter Password"
                 id="password1"
                 className="col-md-5"
                 required
-                onChange={(e) => setUser({ ...user, password: e.target.value })}
+                onChange={(e) =>
+                  setaddUser({ ...addUser, password: e.target.value })
+                }
               />
               <input
                 type="password"
-                value={user.password0}
+                value={addUser.password0}
                 placeholder="Re-enter Password"
                 id="password2"
                 className="col-md-5 ml-custom"
                 required
                 onChange={(e) =>
-                  setUser({ ...user, password0: e.target.value })
+                  setaddUser({ ...addUser, password0: e.target.value })
                 }
               />
             </div>
             <input
               type="Address"
-              value={user.address}
+              value={addUser.address}
               placeholder="Address"
               id="address"
               className="col-md-11"
               style={{ marginLeft: "3vh" }}
               required
-              onChange={(e) => setUser({ ...user, address: e.target.value })}
+              onChange={(e) =>
+                setaddUser({ ...addUser, address: e.target.value })
+              }
             />
             <button
               className="btn btn-primary btn-lg signupcenter"

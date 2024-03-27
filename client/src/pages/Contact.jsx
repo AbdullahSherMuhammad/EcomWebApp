@@ -13,7 +13,7 @@ const Contact = () => {
         <div className="row">
           <div className="col-md-6 mt-4">
             <div className="error-template">
-              <img src={Map} alt="Lorem Ipsum Image" width="100%" />
+              <img src={Map} alt="" width="100%" />
             </div>
           </div>
           <div className="col-md-6 mt-4 pt-2">
