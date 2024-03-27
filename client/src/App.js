@@ -6,8 +6,10 @@ import Policy from "./pages/Policy.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import PageNotFound from "./pages/PageNotFound.jsx";
+import dotenv from "dotenv";
 
 function App() {
+  dotenv.config();
   return (
     <div className="App">
       <Routes>

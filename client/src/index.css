@@ -94,7 +94,7 @@ body {
 
 .footer {
   /* position:absolute; */
-  margin-top: 3vh;
+  margin-top: auto;
   background-color: #f5ba13 ;
   color:antiquewhite;
   text-align: center; 
