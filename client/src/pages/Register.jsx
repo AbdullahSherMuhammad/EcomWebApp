@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import Layout from "../components/Layout/Layout";
 import axios from "axios";
 import toast from "react-hot-toast";
-import dotenv from "dotenv";
 
 const Register = () => {
-  // dotenv.config();
-  const URI = process.env.REACT_APP_API;
   const newUser = {
     fName: "",
     lName: "",

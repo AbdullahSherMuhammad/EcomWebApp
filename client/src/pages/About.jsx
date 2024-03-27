@@ -14,7 +14,7 @@ const About = () => {
         <div className="row">
           <div className="col-md-8 mt-4">
             <div className="error-template">
-              <img src={AboutLorem} alt="Lorem Ipsum Image" />
+              <img src={AboutLorem} alt="" />
             </div>
           </div>
           <div className="col-md-4 mt-none pt-none">
