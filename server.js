@@ -1,5 +1,5 @@
 import express from "express";
-import bodyParser from "body-parser";
+import BodyParser from "body-parser";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import connectdb from "./config/db.js";
@@ -14,8 +14,9 @@ const app = express();
 const port = process.env.PORT;
 
 //middleware
+app.use(BodyParser.urlencoded({ extended: true }));
+app.use(BodyParser.json());
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 //routes

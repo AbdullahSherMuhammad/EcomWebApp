@@ -1,8 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../components/Layout/Layout";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Axios from "axios";
+import toast from "react-hot-toast";
 
-const login = () => {
+const Login = () => {
+  const navigate = useNavigate();
+  const newUser = {
+    email: "",
+    password: "",
+  };
+
+  const [loginUser, setloginUser] = useState(newUser);
+  const ServerAPI = "http://localhost:8080/api/v1/auth";
+  async function HandleClick(e) {
+    e.preventDefault();
+
+    try {
+      const res = await Axios.post(`${ServerAPI}/login`, { loginUser });
+
+      if (res.data.success) {
+        toast.success("Login Successfully");
+        setTimeout(() => {
+          navigate("/home");
+        }, 500);
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  }
   return (
     <Layout
       title="Login - TheStore"
@@ -18,20 +46,28 @@ const login = () => {
 
             <input
               type="email"
+              value={loginUser.email}
               placeholder="Email Address"
               id="email"
               className="col-md-10"
+              onChange={(e) =>
+                setloginUser({ ...loginUser, email: e.target.value })
+              }
             />
 
             <input
               type="password"
+              value={loginUser.password}
               placeholder="Enter Password"
               id="password1"
               className="col-md-10"
+              onChange={(e) =>
+                setloginUser({ ...loginUser, password: e.target.value })
+              }
             />
-            <button className="btn btn-primary btn-lg">
+            <button className="btn btn-primary btn-lg" onClick={HandleClick}>
               <span className="" />
-              Sign Up
+              Sign In
             </button>
             <div className=" d-flex flex-column align-items-center col-md-12 mt-4">
               <p style={{ color: "antiquewhite" }}>
@@ -59,4 +95,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;

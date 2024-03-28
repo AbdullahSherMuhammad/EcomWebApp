@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import Layout from "../components/Layout/Layout";
 import Axios from "axios";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
   const newUser = {
     fName: "",
     lName: "",
@@ -18,19 +20,24 @@ const Register = () => {
   const ServerAPI = "http://localhost:8080/api/v1/auth";
   async function HandleClick(e) {
     e.preventDefault();
+
     try {
       if (addUser.password !== addUser.password0) {
         toast.error("Password Doesn't Match");
         return;
       }
-      const res = await Axios.post(`${ServerAPI}/register`, {
-        addUser,
-      });
+      const res = await Axios.post(`${ServerAPI}/register`, { addUser });
+
       if (res.data.success) {
-        toast.success("Registered Sucessfully");
+        toast.success("User Created Sucessfuly");
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
+      } else {
+        toast.error(res.data.message);
       }
     } catch (error) {
-      toast.error("Something went Wrong");
+      toast.error("Something Went Wrong");
     }
   }
 

@@ -3,17 +3,20 @@ import { requireSingIn } from "../middlewares/authMiddleware.js";
 import userModel from "../models/userModel.js";
 import JWT from "jsonwebtoken";
 
+// Authetication Controller for Register New User
 export const registerController = async (req, res) => {
   try {
     const { addUser } = req.body;
-    console.log(addUser);
     const { fName, lName, email, phone, password, address } = addUser;
-    const name = fName + " " + lName;
-    if (!name) return res.send({ error: "Name is required" });
-    if (!email) return res.send({ error: "Email is required" });
-    if (!password) return res.send({ error: "Password is required" });
-    if (!phone) return res.send({ error: "Phone is required" });
-    if (!address) return res.send({ error: "Address is required" });
+    let name;
+    fName && lName ? (name = fName + " " + lName) : (name = undefined);
+    if (!name) return res.status(401).send({ message: "Name is required" });
+    if (!email) return res.status(401).send({ message: "Email is Required" });
+    if (!phone) return res.status(401).send({ message: "Phone is required" });
+    if (!password)
+      return res.status(401).send({ message: "Password is required" });
+    if (!address)
+      return res.status(401).send({ message: "Address is required" });
 
     //console.log(userModel.findOne({ email }));
 
@@ -44,11 +47,14 @@ export const registerController = async (req, res) => {
   }
 };
 
+// Authetication Controller for Login User
 export const loginController = async (req, res) => {
-  const { loginEmail, loginPass } = req.body;
+  const { loginUser } = req.body;
+  const { email, password } = loginUser;
+  // const { loginEmail, loginPass } = req.body;
 
   try {
-    const isUser = await userModel.findOne({ email: loginEmail });
+    const isUser = await userModel.findOne({ email });
     if (!isUser) {
       return res.status(404).send({
         success: false,
@@ -56,17 +62,17 @@ export const loginController = async (req, res) => {
       });
     }
 
-    if (!loginEmail || !loginPass)
+    if (!email || !password)
       return res.send({
         success: false,
         message: "Wrong Email or Password",
       });
 
-    const userAuthenticated = await comparePass(loginPass, isUser.password);
+    const userAuthenticated = await comparePass(password, isUser.password);
     if (!userAuthenticated)
-      res.status(401).send({ success: false, message: "UnAuthorized" });
+      res.status(401).send({ success: false, message: "Wrong Password !" });
 
-    //token
+    //JWT Token for Signed in user
     const token = await JWT.sign({ _id: isUser._id }, process.env.JWT_Secret, {
       expiresIn: "7d",
     });
@@ -87,6 +93,7 @@ export const loginController = async (req, res) => {
   }
 };
 
+//// Authetication Controller for Admin Login
 export const testController = async (req, res) => {
   console.log("test controller called");
   res.status(200).send({
