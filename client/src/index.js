@@ -5,14 +5,15 @@ import "./styles/Authstyle.css";
 import App from "./App.js";
 import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals.js";
+import { AuthProvider } from "./components/context/AuthContext.js";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <BrowserRouter>
-    <React.StrictMode>
+  <AuthProvider>
+    <BrowserRouter>
       <App />
-    </React.StrictMode>
-  </BrowserRouter>
+    </BrowserRouter>
+  </AuthProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

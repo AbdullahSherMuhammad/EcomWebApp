@@ -3,8 +3,10 @@ import Layout from "../components/Layout/Layout";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
 import toast from "react-hot-toast";
+import { useAuth } from "../components/context/AuthContext";
 
 const Login = () => {
+  const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
   const newUser = {
     email: "",
@@ -21,6 +23,12 @@ const Login = () => {
 
       if (res.data.success) {
         toast.success("Login Successfully");
+        setAuth({
+          ...auth,
+          user: res.data.user,
+          token: res.data.token,
+        });
+        localStorage.setItem("auth", JSON.stringify(res.data));
         setTimeout(() => {
           navigate("/home");
         }, 500);

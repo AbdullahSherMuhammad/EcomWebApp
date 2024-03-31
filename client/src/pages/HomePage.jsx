@@ -1,7 +1,9 @@
 import React from "react";
 import Layout from "../components/Layout/Layout";
+import { useAuth } from "../components/context/AuthContext";
 
 const HomePage = () => {
+  const [auth, setAuth] = useAuth();
   return (
     <Layout
       title="TheStore"
@@ -9,6 +11,7 @@ const HomePage = () => {
       keywords="Newsfeeds, Highlights, TheStore, Products, New Products, Homepage, store"
     >
       <h1>HomePage</h1>
+      <pre>{JSON.stringify(auth, null, 4)}</pre>
     </Layout>
   );
 };
