@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout/Layout";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Axios from "axios";
 import toast from "react-hot-toast";
 import { useAuth } from "../components/context/AuthContext";
@@ -8,6 +8,8 @@ import { useAuth } from "../components/context/AuthContext";
 const Login = () => {
   const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
   const newUser = {
     email: "",
     password: "",
@@ -30,7 +32,7 @@ const Login = () => {
         });
         localStorage.setItem("auth", JSON.stringify(res.data));
         setTimeout(() => {
-          navigate("/home");
+          navigate(location.state || "/home");
         }, 500);
       } else {
         toast.error(res.data.message);
@@ -80,12 +82,14 @@ const Login = () => {
             <div className=" d-flex flex-column align-items-center col-md-12 mt-4">
               <p style={{ color: "antiquewhite" }}>
                 Forgot Password?{" "}
-                <span
-                  className="
+                <Link to="/forgot-password">
+                  <span
+                    className="
               alterButtons"
-                >
-                  Click here to recover!
-                </span>
+                  >
+                    Click here to recover!
+                  </span>
+                </Link>
               </p>
               <p style={{ color: "antiquewhite" }}>
                 Dont have an account? <br />

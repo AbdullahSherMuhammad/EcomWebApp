@@ -14,6 +14,8 @@ const Register = () => {
     password: "",
     password0: "",
     address: "",
+    securityQuestion: "",
+    answer: "",
   };
 
   const [addUser, setaddUser] = useState(newUser);
@@ -24,6 +26,10 @@ const Register = () => {
     try {
       if (addUser.password !== addUser.password0) {
         toast.error("Password Doesn't Match");
+        return;
+      }
+      if (addUser.securityQuestion === "" || undefined) {
+        toast.error("Please Select a security question");
         return;
       }
       const res = await Axios.post(`${ServerAPI}/register`, { addUser });
@@ -127,6 +133,60 @@ const Register = () => {
                 }
               />
             </div>
+            <label
+              className="col-md-11"
+              for="secuirtyQuestion"
+              style={{
+                fontSize: "3.5vh",
+                color: "wheat",
+                fontWeight: "bolder",
+                letterSpacing: "0.5vh",
+                lineHeight: "2vh",
+                textShadow: "#a39306",
+                marginLeft: "14vh",
+                marginBottom: "4vh",
+              }}
+            >
+              Select your question
+            </label>
+
+            <select
+              className="col-md-11"
+              style={{ marginLeft: "3vh" }}
+              required
+              id="secuirtyQuestion"
+              name="secuirtyQuestion"
+              onChange={(e) =>
+                setaddUser({
+                  ...addUser,
+                  securityQuestion: e.target.value,
+                })
+              }
+            >
+              <option required value="undefined">
+                Select a secuirty Question
+              </option>
+              <option value="birthPlace">What is your birth place?</option>
+              <option value="petName">What is your first pet name?</option>
+              <option value="childhoodFriendsName">
+                What was your childhood bestfriend's name?
+              </option>
+              <option value="parentsMeetlocation">
+                Where did your parents meet?
+              </option>
+            </select>
+            <input
+              type="text"
+              value={addUser.answer}
+              placeholder="Enter your Answer"
+              id="answer"
+              className="col-md-11"
+              style={{ marginLeft: "3vh" }}
+              required
+              onChange={(e) =>
+                setaddUser({ ...addUser, answer: e.target.value })
+              }
+            />
             <input
               type="Address"
               value={addUser.address}

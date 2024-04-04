@@ -20,17 +20,17 @@ const Header = () => {
   };
   return (
     <div className="header">
-      <nav className="navbar navbar-expand-lg navbar-light  ">
+      <nav className="navbar navbar-expand-lg">
         <Link
           to="/Home"
           className="navbar-brand"
-          style={{ boxShadow: "8px 6px 7px -4px #F0E68C" }}
+          style={{ boxShadow: "8px 6px 7px -4px #a39306" }}
         >
           TheStore
           <TfiShoppingCart
             size="3vh"
             style={{
-              color: "antiquewhite",
+              color: "#a39306 ",
               marginBottom: "3px",
               marginLeft: "3px",
               marginRight: "3px",
@@ -41,8 +41,8 @@ const Header = () => {
           className="navbar-toggler"
           type="button"
           data-toggle="collapse"
-          data-target="#navbarTogglerDemo03"
-          aria-controls="navbarTogglerDemo03"
+          data-target="#navbarTogglerDemo02"
+          aria-controls="navbarTogglerDemo02"
           aria-expanded="false"
           aria-label="Toggle navigation"
         >

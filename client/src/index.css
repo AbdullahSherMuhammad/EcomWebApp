@@ -13,8 +13,8 @@ body {
 
 .header{
   font-family: "Playfair Display", serif;
-    background-color: #f5ba13 ;
-    color:antiquewhite;
+    background-color: whitesmoke ;
+    color: #f5ba13;
     text-align: left; 
     bottom: 0%;
     width: 100%;  
@@ -26,14 +26,13 @@ body {
 }
 
 .navbar {
-  color: antiquewhite;
   font-family: "Poppins", sans-serif; 
   font-size: 17px;  
   line-height: 26px;            
   text-transform: uppercase; 
-  box-shadow: 0px 8px 6px -6px gray;
-  --webkit-box-shadow:0px 8px 6px -6px gray;  
-  border-bottom: 0.5px solid grey; 
+  box-shadow: 0px 8px 6px -6px #a39306 ;
+  --webkit-box-shadow:0px 8px 6px -6px #a39306 ;  
+  border-bottom: 0.5px solid #a39306 ; 
 }
 
 .navbar-nav{
@@ -44,7 +43,7 @@ body {
 
 .nav-link{
   font-weight: 300 !important;    
-  color: antiquewhite !important;  
+  color: #f5ba13 !important; 
 }
 
 .nav-link:hover{  
@@ -55,8 +54,8 @@ body {
  .active{
   /* box-shadow: 8px y-axis 8px x-axis 6px opicity/blur -6px radius gray; */
   /* --webkit-box-shadow:0px 8px 6px -6px gray;   */
-   border-bottom: 0.5px solid #F0E68C; 
-  color: #F0E68C !important;
+   border-bottom: 0.5px solid #a39306; 
+  color: #a39306 !important;
   font-weight: 400 !important;
    }
   
@@ -75,7 +74,7 @@ body {
     height: 1px;
     left: 50%;
     bottom:0; 
-    background-color: #F0E68C;
+    background-color: #f5ba13;
     transition: all ease-in-out .2s;
   }
   .nav-link:hover::after{
@@ -85,7 +84,7 @@ body {
 
 .navbar-brand{
   font-family: "Playfair Display", serif;
-  color: antiquewhite !important;
+  color: #a39306  !important;
   font-weight: 500 !important;
   letter-spacing: 2px;
 }
@@ -101,15 +100,50 @@ body {
   bottom: 0%;
   width: 100%;  
   height: auto; 
-  box-shadow: 0px -8px 6px -6px gray;  
-  --webkit-box-shadow:0px -8px 6px -6px gray;  
-  border-top: 0.5px solid grey;   
+  box-shadow: 0px -8px 6px -6px #a39306 ;  
+  --webkit-box-shadow:0px -8px 6px -6px #a39306 ;  
+  border-top: 0.5px solid #a39306 ;   
 }     
 .footer h1 {
   
   font-family:  "Poppins", sans-serif;
   font-size: 4vh;
 } 
+
+.footer .nav-link {
+  
+  font-weight: 300 !important;    
+  color: antiquewhite !important; 
+} 
+
+.footer .nav-link:hover {
+  
+  font-weight: 500 !important;    
+  
+} 
+
+.footer .nav-link::after{
+  content: '';
+  position: absolute; 
+  width: 0px;
+  height: 1px;
+  left: 50%;
+  bottom:0; 
+  background-color: #d8c38a;
+  transition: all ease-in-out .2s;
+}
+.footer .nav-link:hover::after{
+  width: 100%;
+  left: 0;
+}
+
+.footer  .active{
+
+   border-bottom: 0.5px solid #a39306; 
+  color:  #a39306 !important;
+  font-weight: 400 !important;
+   }
+
 
 .Copyright{
   
@@ -141,6 +175,7 @@ body {
  }
 
  .btn-primary{
+  
   background-color: wheat ;
   color: #f5ba13;
   border: 1px solid #f5ba13;

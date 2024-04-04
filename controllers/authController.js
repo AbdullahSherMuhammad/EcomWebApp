@@ -6,10 +6,21 @@ import JWT from "jsonwebtoken";
 // Authetication Controller for Register New User
 export const registerController = async (req, res) => {
   try {
-    const { addUser } = req.body;
-    const { fName, lName, email, phone, password, address } = addUser;
+    // const { addUser } = req.body;
+    const {
+      fName,
+      lName,
+      email,
+      phone,
+      password,
+      address,
+      securityQuestion,
+      answer,
+    } = req.body.addUser;
     let name;
-    fName && lName ? (name = fName + " " + lName) : (name = undefined);
+    fName && lName
+      ? (name = fName.trim().toUpperCase() + " " + lName.trim().toUpperCase())
+      : (name = undefined);
     if (!name) return res.status(401).send({ message: "Name is required" });
     if (!email) return res.status(401).send({ message: "Email is Required" });
     if (!phone) return res.status(401).send({ message: "Phone is required" });
@@ -17,7 +28,9 @@ export const registerController = async (req, res) => {
       return res.status(401).send({ message: "Password is required" });
     if (!address)
       return res.status(401).send({ message: "Address is required" });
-
+    if (!securityQuestion)
+      return res.status(401).send({ message: "No Security Question Selected" });
+    if (!answer) return res.status(401).send({ message: "Answer is required" });
     //console.log(userModel.findOne({ email }));
 
     const existingUser = await userModel.findOne({ email });
@@ -33,6 +46,8 @@ export const registerController = async (req, res) => {
       password: hashedpassword,
       phone,
       address,
+      securityQuestion,
+      answer,
     }).save();
     res
       .status(201)
@@ -91,6 +106,46 @@ export const loginController = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+// Forgot Password Controller to check security question
+export const checkSecurityQuestions = async (req, res) => {
+  console.log(req.body);
+  const { userRecover } = req.body;
+  const { email, securityQuestion, answer } = userRecover;
+  if (!email)
+    return res
+      .status(404)
+      .send({ success: false, message: "Email is required!" });
+  if (!securityQuestion)
+    return res
+      .status(404)
+      .send({ success: false, message: "Select a Security Question!" });
+  if (!answer)
+    return res
+      .status(404)
+      .send({ success: false, message: "Answer is required!" });
+  const userFound = await userModel.findOne({
+    email,
+    securityQuestion,
+    answer,
+  });
+  if (userFound)
+    return res.status(200).send({ success: true, message: "user found" });
+  else
+    res.status(400).send({ success: false, message: "Details doesn't match" });
+};
+
+export const setNewPassword = async (req, res) => {
+  const { password, email } = req.body.userRecover;
+  const hashpass = await hashedpass(password);
+  const userFound = await userModel.findOne({
+    email,
+  });
+  userFound.password = hashpass;
+  return res
+    .status(200)
+    .send({ success: true, message: "Password Updated Successfully!" });
 };
 
 //// Authetication Controller for Admin Login
