@@ -1,19 +1,16 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout/Layout.jsx";
 import { Link } from "react-router-dom";
-import Axios from "axios";
+import axios from "axios";
 import toast from "react-hot-toast";
 
 const ForgotPassword = () => {
   const ServerAPI = "http://localhost:8080/api/v1/auth";
 
-  const [CheckSQ, setCheckSQ] = useState({
+  const [recoverUserPass, setrecoverUserPass] = useState({
     email: "",
     securityQuestion: "",
     answer: "",
-  });
-
-  const [userRecover, setUserRecover] = useState({
     password: "",
     password0: "",
     conditionRender: false,
@@ -21,18 +18,37 @@ const ForgotPassword = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!CheckSQ.email || !CheckSQ.securityQuestion || !CheckSQ.answer) {
-      return toast.error("Enter Email, Security Question and Answer");
+    try {
+      if (
+        !recoverUserPass.email ||
+        !recoverUserPass.securityQuestion ||
+        !recoverUserPass.answer
+      ) {
+        return toast.error("Enter Email, Security Question & Answer");
+      }
+      if (recoverUserPass.conditionRender === true) {
+        if (!recoverUserPass.password || !recoverUserPass.password0)
+          return toast.error("Fill Password in Both fields");
+        if (recoverUserPass.password !== recoverUserPass.password0)
+          return toast.error("Password Doesn't Match!");
+        const res = await axios.post(`${ServerAPI}/forgot-password`, {
+          recoverUserPass,
+        });
+        if (!res.data.success) return toast.error(res.data.message);
+      }
+      const res = await axios.post(`${ServerAPI}/forgot-password`, {
+        recoverUserPass,
+      });
+      if (!res.data.success) return toast.error(res.data.message);
+
+      setInterval(
+        () => setrecoverUserPass({ ...recoverUserPass, conditionRender: true }),
+        500
+      );
+    } catch (error) {
+      console.log(error);
+      return toast.error(error.response.data.message);
     }
-
-    const res = await Axios.get(`${ServerAPI}/forgot-password`, {
-      CheckSQ,
-    });
-
-    // const data = res.data;
-    // toast.success(data);
-
-    setUserRecover({ ...userRecover, conditionRender: true });
   }
   return (
     <Layout
@@ -43,7 +59,7 @@ const ForgotPassword = () => {
       <div className="bgimg">
         <div className="container d-flex align-items-center justify-content-center ">
           <form className="formdiv row mt-5 pt-3 pb-3 pl-2 pr-2 mb-5 d-flex justify-content-center glass">
-            {!userRecover.conditionRender ? (
+            {!recoverUserPass.conditionRender ? (
               <>
                 <h1 className="col-md-12 d-flex justify-content-center mb-3 formheading">
                   Forgot Password?
@@ -51,12 +67,15 @@ const ForgotPassword = () => {
 
                 <input
                   type="email"
-                  value={userRecover.email}
+                  value={recoverUserPass.email}
                   placeholder="Email Address"
                   id="email"
                   className="col-md-10"
                   onChange={(e) =>
-                    setCheckSQ({ ...CheckSQ, email: e.target.value })
+                    setrecoverUserPass({
+                      ...recoverUserPass,
+                      email: e.target.value,
+                    })
                   }
                 />
                 <label
@@ -76,12 +95,12 @@ const ForgotPassword = () => {
 
                 <select
                   className="col-md-10"
-                  value={userRecover.securityQuestion}
+                  value={recoverUserPass.securityQuestion}
                   id="secuirtyQuestion"
                   name="secuirtyQuestion"
                   onChange={(e) =>
-                    setCheckSQ({
-                      ...CheckSQ,
+                    setrecoverUserPass({
+                      ...recoverUserPass,
                       securityQuestion: e.target.value,
                     })
                   }
@@ -100,12 +119,15 @@ const ForgotPassword = () => {
                 </select>
                 <input
                   type="text"
-                  value={userRecover.answer}
+                  value={recoverUserPass.answer}
                   placeholder="Enter your Answer"
                   id="answer"
                   className="col-md-10"
                   onChange={(e) =>
-                    setCheckSQ({ ...CheckSQ, answer: e.target.value })
+                    setrecoverUserPass({
+                      ...recoverUserPass,
+                      answer: e.target.value,
+                    })
                   }
                 />
                 <button
@@ -134,32 +156,33 @@ const ForgotPassword = () => {
                 </h1>{" "}
                 <input
                   type="password"
-                  value={userRecover.password}
+                  //   value={recoverUserPass.password}
                   placeholder="Enter New Password"
                   id="password"
                   className="col-md-10"
                   onChange={(e) =>
-                    setUserRecover({ ...userRecover, password: e.target.value })
+                    setrecoverUserPass({
+                      ...recoverUserPass,
+                      password: e.target.value,
+                    })
                   }
                 />
                 <input
                   type="password0"
-                  value={userRecover.password0}
+                  value={recoverUserPass.password0}
                   placeholder="Re-enter New Password"
                   id="password0"
                   className="col-md-10"
                   onChange={(e) =>
-                    setUserRecover({
-                      ...userRecover,
+                    setrecoverUserPass({
+                      ...recoverUserPass,
                       password0: e.target.value,
                     })
                   }
                 />
                 <button
                   className="btn btn-primary btn-lg"
-                  onClick={(e) =>
-                    setUserRecover({ ...userRecover, conditionRender: true })
-                  }
+                  onClick={handleSubmit}
                 >
                   <span className="" />
                   Save Changes

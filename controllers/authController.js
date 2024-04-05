@@ -31,6 +31,7 @@ export const registerController = async (req, res) => {
     if (!securityQuestion)
       return res.status(401).send({ message: "No Security Question Selected" });
     if (!answer) return res.status(401).send({ message: "Answer is required" });
+
     //console.log(userModel.findOne({ email }));
 
     const existingUser = await userModel.findOne({ email });
@@ -47,7 +48,7 @@ export const registerController = async (req, res) => {
       phone,
       address,
       securityQuestion,
-      answer,
+      answer: answer.trim().toUpperCase(),
     }).save();
     res
       .status(201)
@@ -110,9 +111,8 @@ export const loginController = async (req, res) => {
 
 // Forgot Password Controller to check security question
 export const checkSecurityQuestions = async (req, res) => {
-  console.log(req.body);
-  const { userRecover } = req.body;
-  const { email, securityQuestion, answer } = userRecover;
+  const { recoverUserPass } = req.body;
+  const { email, securityQuestion, answer } = recoverUserPass;
   if (!email)
     return res
       .status(404)
@@ -128,7 +128,7 @@ export const checkSecurityQuestions = async (req, res) => {
   const userFound = await userModel.findOne({
     email,
     securityQuestion,
-    answer,
+    answer: answer.trim().toUpperCase(),
   });
   if (userFound)
     return res.status(200).send({ success: true, message: "user found" });
@@ -136,16 +136,22 @@ export const checkSecurityQuestions = async (req, res) => {
     res.status(400).send({ success: false, message: "Details doesn't match" });
 };
 
-export const setNewPassword = async (req, res) => {
-  const { password, email } = req.body.userRecover;
-  const hashpass = await hashedpass(password);
-  const userFound = await userModel.findOne({
-    email,
-  });
-  userFound.password = hashpass;
-  return res
-    .status(200)
-    .send({ success: true, message: "Password Updated Successfully!" });
+export const setNewPassword = async (req, res, next) => {
+  if (
+    (req.body.recoverUserPass.password && req.body.recoverUserPass.email) !==
+    ("" || undefined)
+  ) {
+    const { password, email } = req.body.recoverUserPass;
+    const hashpass = await hashedpass(password);
+    const userFound = await userModel.findOne({
+      email,
+    });
+    userFound.password = hashpass;
+    return res
+      .status(200)
+      .send({ success: true, message: "Password Updated Successfully!" });
+  }
+  return next();
 };
 
 //// Authetication Controller for Admin Login
