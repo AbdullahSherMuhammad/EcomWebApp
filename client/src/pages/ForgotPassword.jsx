@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 const ForgotPassword = () => {
   const ServerAPI = "http://localhost:8080/api/v1/auth";
   const navigate = useNavigate();
-
   const [checkUserSQ, setcheckUserSQ] = useState({
     email: "",
     securityQuestion: "",
@@ -36,7 +35,7 @@ const ForgotPassword = () => {
         const res = await axios.post(`${ServerAPI}/forgot-password`, {
           checkUserSQ,
         });
-        if (!res.data.success) return toast.error(res.data.message);
+        if (!res.data.success) return toast.success(res.data.message);
 
         setInterval(
           () => setcheckUserSQ({ ...checkUserSQ, conditionRender: true }),
@@ -57,7 +56,10 @@ const ForgotPassword = () => {
         const res = await axios.post(`${ServerAPI}/setnew-password`, {
           recoverUserPass,
         });
-        if (!res.data.success) return toast.error(res.data.message);
+        if (!res.data.success) return toast.success(res.data.message);
+        setTimeout(() => {
+          navigate("/login");
+        }, 500);
       }
     } catch (error) {
       console.log(error);
