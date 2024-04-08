@@ -13,13 +13,19 @@ const router = express.Router();
 
 router.post("/register", registerController);
 router.post("/login", loginController);
-router.post("/forgot-password", setNewPassword, checkSecurityQuestions);
+router.post("/forgot-password", checkSecurityQuestions);
+router.post("/setnew-password", setNewPassword);
 // router.get("/test", requireSingIn, isAdmin, testController);
 
 // router.post("/forgot-password", setNewPassword);
 
-//protected Route
+//protected User Route
 router.get("/user-auth", requireSingIn, (req, res) => {
+  res.status(200).send({ ok: true });
+});
+
+//protected Admin Route
+router.get("/user-auth", requireSingIn, isAdmin, (req, res) => {
   res.status(200).send({ ok: true });
 });
 

@@ -111,8 +111,8 @@ export const loginController = async (req, res) => {
 
 // Forgot Password Controller to check security question
 export const checkSecurityQuestions = async (req, res) => {
-  const { recoverUserPass } = req.body;
-  const { email, securityQuestion, answer } = recoverUserPass;
+  const { checkUserSQ } = req.body;
+  const { email, securityQuestion, answer } = checkUserSQ;
   if (!email)
     return res
       .status(404)
@@ -136,7 +136,8 @@ export const checkSecurityQuestions = async (req, res) => {
     res.status(400).send({ success: false, message: "Details doesn't match" });
 };
 
-export const setNewPassword = async (req, res, next) => {
+export const setNewPassword = async (req, res) => {
+  console.log(req.body.recoverUserPass);
   if (
     (req.body.recoverUserPass.password && req.body.recoverUserPass.email) !==
     ("" || undefined)
@@ -146,12 +147,11 @@ export const setNewPassword = async (req, res, next) => {
     const userFound = await userModel.findOne({
       email,
     });
-    userFound.password = hashpass;
+    await userModel.findByIdAndUpdate(userFound._id, { password: hashpass });
     return res
       .status(200)
       .send({ success: true, message: "Password Updated Successfully!" });
   }
-  return next();
 };
 
 //// Authetication Controller for Admin Login

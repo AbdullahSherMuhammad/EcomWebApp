@@ -1,50 +1,64 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout/Layout.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 const ForgotPassword = () => {
   const ServerAPI = "http://localhost:8080/api/v1/auth";
+  const navigate = useNavigate();
 
-  const [recoverUserPass, setrecoverUserPass] = useState({
+  const [checkUserSQ, setcheckUserSQ] = useState({
     email: "",
     securityQuestion: "",
     answer: "",
+    conditionRender: false,
+  });
+
+  const [recoverUserPass, setRecoverUserPass] = useState({
+    email: "",
     password: "",
     password0: "",
-    conditionRender: false,
   });
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      if (
-        !recoverUserPass.email ||
-        !recoverUserPass.securityQuestion ||
-        !recoverUserPass.answer
-      ) {
-        return toast.error("Enter Email, Security Question & Answer");
-      }
-      if (recoverUserPass.conditionRender === true) {
-        if (!recoverUserPass.password || !recoverUserPass.password0)
-          return toast.error("Fill Password in Both fields");
-        if (recoverUserPass.password !== recoverUserPass.password0)
-          return toast.error("Password Doesn't Match!");
+      if (checkUserSQ.conditionRender === false) {
+        if (
+          !checkUserSQ.email ||
+          !checkUserSQ.securityQuestion ||
+          !checkUserSQ.answer
+        ) {
+          return toast.error("Enter Email, Security Question & Answer");
+        }
+
         const res = await axios.post(`${ServerAPI}/forgot-password`, {
+          checkUserSQ,
+        });
+        if (!res.data.success) return toast.error(res.data.message);
+
+        setInterval(
+          () => setcheckUserSQ({ ...checkUserSQ, conditionRender: true }),
+          500
+        );
+      }
+      if (checkUserSQ.conditionRender === true) {
+        setRecoverUserPass({ ...recoverUserPass, email: checkUserSQ.email });
+        if (recoverUserPass.password === "" || undefined) {
+          return toast.error("Please Fill both password fields");
+        }
+        if (recoverUserPass.password0 === "" || undefined) {
+          return toast.error("Please Fill both password fields");
+        }
+        if (recoverUserPass.password !== recoverUserPass.password0) {
+          return toast.error("Password Doesn't Match!");
+        }
+        const res = await axios.post(`${ServerAPI}/setnew-password`, {
           recoverUserPass,
         });
         if (!res.data.success) return toast.error(res.data.message);
       }
-      const res = await axios.post(`${ServerAPI}/forgot-password`, {
-        recoverUserPass,
-      });
-      if (!res.data.success) return toast.error(res.data.message);
-
-      setInterval(
-        () => setrecoverUserPass({ ...recoverUserPass, conditionRender: true }),
-        500
-      );
     } catch (error) {
       console.log(error);
       return toast.error(error.response.data.message);
@@ -59,7 +73,7 @@ const ForgotPassword = () => {
       <div className="bgimg">
         <div className="container d-flex align-items-center justify-content-center ">
           <form className="formdiv row mt-5 pt-3 pb-3 pl-2 pr-2 mb-5 d-flex justify-content-center glass">
-            {!recoverUserPass.conditionRender ? (
+            {!checkUserSQ.conditionRender ? (
               <>
                 <h1 className="col-md-12 d-flex justify-content-center mb-3 formheading">
                   Forgot Password?
@@ -67,13 +81,13 @@ const ForgotPassword = () => {
 
                 <input
                   type="email"
-                  value={recoverUserPass.email}
+                  value={checkUserSQ.email}
                   placeholder="Email Address"
                   id="email"
                   className="col-md-10"
                   onChange={(e) =>
-                    setrecoverUserPass({
-                      ...recoverUserPass,
+                    setcheckUserSQ({
+                      ...checkUserSQ,
                       email: e.target.value,
                     })
                   }
@@ -95,12 +109,12 @@ const ForgotPassword = () => {
 
                 <select
                   className="col-md-10"
-                  value={recoverUserPass.securityQuestion}
+                  value={checkUserSQ.securityQuestion}
                   id="secuirtyQuestion"
                   name="secuirtyQuestion"
                   onChange={(e) =>
-                    setrecoverUserPass({
-                      ...recoverUserPass,
+                    setcheckUserSQ({
+                      ...checkUserSQ,
                       securityQuestion: e.target.value,
                     })
                   }
@@ -119,13 +133,13 @@ const ForgotPassword = () => {
                 </select>
                 <input
                   type="text"
-                  value={recoverUserPass.answer}
+                  value={checkUserSQ.answer}
                   placeholder="Enter your Answer"
                   id="answer"
                   className="col-md-10"
                   onChange={(e) =>
-                    setrecoverUserPass({
-                      ...recoverUserPass,
+                    setcheckUserSQ({
+                      ...checkUserSQ,
                       answer: e.target.value,
                     })
                   }
@@ -156,25 +170,25 @@ const ForgotPassword = () => {
                 </h1>{" "}
                 <input
                   type="password"
-                  //   value={recoverUserPass.password}
+                  value={recoverUserPass.password}
                   placeholder="Enter New Password"
                   id="password"
                   className="col-md-10"
                   onChange={(e) =>
-                    setrecoverUserPass({
+                    setRecoverUserPass({
                       ...recoverUserPass,
                       password: e.target.value,
                     })
                   }
                 />
                 <input
-                  type="password0"
+                  type="password"
                   value={recoverUserPass.password0}
                   placeholder="Re-enter New Password"
                   id="password0"
                   className="col-md-10"
                   onChange={(e) =>
-                    setrecoverUserPass({
+                    setRecoverUserPass({
                       ...recoverUserPass,
                       password0: e.target.value,
                     })
