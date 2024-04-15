@@ -112,6 +112,7 @@ export const loginController = async (req, res) => {
 // Forgot Password Controller to check security question
 export const checkSecurityQuestions = async (req, res) => {
   const { checkUserSQ } = req.body;
+  console.log(checkUserSQ);
   const { email, securityQuestion, answer } = checkUserSQ;
   if (!email)
     return res
@@ -138,10 +139,8 @@ export const checkSecurityQuestions = async (req, res) => {
 
 export const setNewPassword = async (req, res) => {
   console.log(req.body.recoverUserPass);
-  if (
-    (req.body.recoverUserPass.password && req.body.recoverUserPass.email) !==
-    ("" || undefined)
-  ) {
+
+  try {
     const { password, email } = req.body.recoverUserPass;
     const hashpass = await hashedpass(password);
     const userFound = await userModel.findOne({
@@ -151,6 +150,10 @@ export const setNewPassword = async (req, res) => {
     return res
       .status(200)
       .send({ success: true, message: "Password Updated Successfully!" });
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ success: false, message: "Something went wrong!" });
   }
 };
 

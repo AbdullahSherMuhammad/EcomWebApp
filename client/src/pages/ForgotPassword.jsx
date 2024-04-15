@@ -36,14 +36,14 @@ const ForgotPassword = () => {
           checkUserSQ,
         });
         if (!res.data.success) return toast.success(res.data.message);
+        setRecoverUserPass({ ...recoverUserPass, email: checkUserSQ.email });
 
-        setInterval(
+        setTimeout(
           () => setcheckUserSQ({ ...checkUserSQ, conditionRender: true }),
-          500
+          200
         );
       }
       if (checkUserSQ.conditionRender === true) {
-        setRecoverUserPass({ ...recoverUserPass, email: checkUserSQ.email });
         if (recoverUserPass.password === "" || undefined) {
           return toast.error("Please Fill both password fields");
         }
@@ -53,10 +53,11 @@ const ForgotPassword = () => {
         if (recoverUserPass.password !== recoverUserPass.password0) {
           return toast.error("Password Doesn't Match!");
         }
+
         const res = await axios.post(`${ServerAPI}/setnew-password`, {
           recoverUserPass,
         });
-        if (!res.data.success) return toast.success(res.data.message);
+        if (!res?.data.success) return toast.success(res.data.message);
         setTimeout(() => {
           navigate("/login");
         }, 500);
@@ -74,7 +75,10 @@ const ForgotPassword = () => {
     >
       <div className="bgimg">
         <div className="container d-flex align-items-center justify-content-center ">
-          <form className="formdiv row mt-5 pt-3 pb-3 pl-2 pr-2 mb-5 d-flex justify-content-center glass">
+          <form
+            className="formdiv row mt-5 pt-3 pb-3 pl-2 pr-2 mb-5 d-flex justify-content-center glass"
+            autoComplete="on"
+          >
             {!checkUserSQ.conditionRender ? (
               <>
                 <h1 className="col-md-12 d-flex justify-content-center mb-3 formheading">
@@ -86,6 +90,7 @@ const ForgotPassword = () => {
                   value={checkUserSQ.email}
                   placeholder="Email Address"
                   id="email"
+                  autoComplete="on"
                   className="col-md-10"
                   onChange={(e) =>
                     setcheckUserSQ({
@@ -96,7 +101,7 @@ const ForgotPassword = () => {
                 />
                 <label
                   className=""
-                  for="secuirtyQuestion"
+                  htmlFor="secuirtyQuestion"
                   style={{
                     fontSize: "3.5vh",
                     color: "wheat",

@@ -15,9 +15,7 @@ router.post("/register", registerController);
 router.post("/login", loginController);
 router.post("/forgot-password", checkSecurityQuestions);
 router.post("/setnew-password", setNewPassword);
-// router.get("/test", requireSingIn, isAdmin, testController);
-
-// router.post("/forgot-password", setNewPassword);
+router.get("/test", requireSingIn, isAdmin, testController);
 
 //protected User Route
 router.get("/user-auth", requireSingIn, (req, res) => {
