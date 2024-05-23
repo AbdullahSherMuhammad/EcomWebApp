@@ -68,7 +68,6 @@ export const loginController = async (req, res) => {
   const { loginUser } = req.body;
   const { email, password } = loginUser;
   // const { loginEmail, loginPass } = req.body;
-
   try {
     const isUser = await userModel.findOne({ email });
     if (!isUser) {
@@ -100,6 +99,7 @@ export const loginController = async (req, res) => {
         email: isUser.email,
         phone: isUser.phone,
         address: isUser.address,
+        role: isUser.role,
       },
       timestamp: new Date().toLocaleString(),
       token,
