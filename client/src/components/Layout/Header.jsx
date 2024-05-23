@@ -6,6 +6,7 @@ import { toast } from "react-hot-toast";
 
 const Header = () => {
   const [auth, setAuth] = useAuth();
+  const role = auth.user?.role;
 
   const handleLogout = () => {
     setAuth({
@@ -110,8 +111,11 @@ const Header = () => {
                       className="dropdown-menu"
                       aria-labelledby="dropdownMenuLink"
                     >
-                      <NavLink to="/dashboard" className="nav-link">
-                        Profile
+                      <NavLink
+                        to={role === 0 ? "/profile" : "/dashboard"}
+                        className="nav-link"
+                      >
+                        {role === 0 ? "Profile" : "Dashboard"}
                       </NavLink>
 
                       <NavLink

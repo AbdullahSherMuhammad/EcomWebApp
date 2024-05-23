@@ -9,6 +9,7 @@ import PageNotFound from "./pages/PageNotFound.jsx";
 import Userprofile from "./pages/Userprofile.jsx";
 import PrivateRoute from "./components/Routes/Private.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
+import AdminDashboard from "./pages/AdminDashboard.jsx";
 
 function App() {
   return (
@@ -23,8 +24,11 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/Register" element={<Register />} />
         <Route path="/*" element={<PageNotFound />} />
-        <Route path="/dashboard" element={<PrivateRoute />}>
+        <Route path="/profile" element={<PrivateRoute />}>
           <Route path="" element={<Userprofile />} />
+        </Route>
+        <Route path="/dashboard" element={<PrivateRoute />}>
+          <Route path="" element={<AdminDashboard />} />
         </Route>
         {/* <Route path="/" element={<HomePage />} /> */}
       </Routes>
