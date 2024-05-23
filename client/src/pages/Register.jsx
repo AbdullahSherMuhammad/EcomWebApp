@@ -43,7 +43,7 @@ const Register = () => {
         toast.error(res.data.message);
       }
     } catch (error) {
-      toast.error("Something Went Wrong");
+      toast.error(error.response?.data.message || "Internal Server Error");
     }
   }
 
