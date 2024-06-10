@@ -9,7 +9,7 @@ export default function PrivateRoute() {
   const [ok, setOk] = useState(false);
 
   // eslint-disable-next-line
-  const [auth, setAuth] = useAuth();
+  const [auth] = useAuth();
 
   useEffect(() => {
     const authcheck = async () => {

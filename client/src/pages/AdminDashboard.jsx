@@ -1,11 +1,11 @@
 import React from "react";
-import Layout from "../components/Layout/Layout";
+import AdminMenu from "../components/Layout/AdminMenu.jsx";
 
 const AdminDashboard = () => {
   return (
-    <Layout>
-      <h1> Admin Panel </h1>
-    </Layout>
+    <div>
+      <AdminMenu />
+    </div>
   );
 };
 
