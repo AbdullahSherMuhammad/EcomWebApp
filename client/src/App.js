@@ -10,9 +10,9 @@ import Userprofile from "./pages/User/Userprofile.jsx";
 import PrivateRoute from "./components/Routes/Private.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import AdminRoute from "./components/Routes/AdminRoute.jsx";
-import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
 import { useAuth } from "./components/context/AuthContext.js";
-import Dashboard from "./pages/admin/Dashboard.jsx";
+import AdminPanelLayout from "./pages/admin/AdminPanelLayout.jsx";
+import MyDashboard from "./pages/admin/MyDashboard.jsx";
 import Orders from "./pages/admin/Orders.jsx";
 import Reviews from "./pages/admin/Reviews.jsx";
 import StoreProducts from "./pages/admin/StoreProducts.jsx";
@@ -38,13 +38,14 @@ function App() {
           <Route path="" element={<Userprofile />} />
         </Route>
         <Route path="/adminpanel" element={<AdminRoute />}>
-          <Route exact path={`${user}`} element={<AdminDashboard />}>
-            <Route exact path="dashboard" element={<Dashboard />} />
-            <Route exact path="orders" element={<Orders />} />
-            <Route exact path="products" element={<StoreProducts />} />
-            <Route exact path="reviews" element={<Reviews />} />
-            <Route exact path="transactions" element={<Transactions />} />
-            <Route exact path="users" element={<Users />} />
+          <Route path={`${user}`} element={<AdminPanelLayout />}>
+            <Route index element={<MyDashboard />} />
+            <Route path="dashboard" element={<MyDashboard />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="products" element={<StoreProducts />} />
+            <Route path="reviews" element={<Reviews />} />
+            <Route path="transactions" element={<Transactions />} />
+            <Route path="users" element={<Users />} />
           </Route>
         </Route>
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, Link } from "react-router-dom";
-//import "../../styles/AdminPanel.css";
+import "../../styles/AdminPanel.css";
 import { TfiShoppingCart } from "react-icons/tfi";
 import { useAuth } from "../../components/context/AuthContext";
 
@@ -9,7 +9,7 @@ const AdminMenu = ({ children }) => {
   const user = auth?.user?.name || "admin";
 
   return (
-    <div id="sidebar">
+    <div id="sidebar" className="adminmenu">
       <header>
         <Link
           to="/Home"
@@ -66,6 +66,7 @@ const AdminMenu = ({ children }) => {
           </NavLink>
         </li>
       </ul>
+      {children}
     </div>
   );
 };

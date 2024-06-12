@@ -120,7 +120,7 @@ const Header = () => {
                       {role === 1 && (
                         <li>
                           <NavLink
-                            to={`adminpanel/${user}`}
+                            to={`/adminpanel/${user}`}
                             className="nav-link"
                           >
                             Admin Panel
