@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 const Header = () => {
   const [auth, setAuth] = useAuth();
   const role = auth.user?.role;
+  const user = auth?.user?.name || "user";
 
   const handleLogout = () => {
     setAuth({
@@ -118,7 +119,10 @@ const Header = () => {
                       </li>
                       {role === 1 && (
                         <li>
-                          <NavLink to="/dashboard" className="nav-link">
+                          <NavLink
+                            to={`/adminpanel/${user}`}
+                            className="nav-link"
+                          >
                             Admin Panel
                           </NavLink>
                         </li>
